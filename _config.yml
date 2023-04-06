@@ -6,7 +6,7 @@
 name: Meiyan's Hands-on Journal
 
 # Short bio or description (displayed in the header)
-description: Keep on recording 
+description: 
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: https://raw.githubusercontent.com/barryclark/jekyll-now/master/images/jekyll-logo.png
@@ -74,8 +74,8 @@ sass:
 
 # Use the following plug-ins
 gems:
-  - jekyll-sitemap  #Create a sitemap using the official Jekyll sitemap gem
-  - jekyll-feed  #Create an Atom feed using the official Jekyll feed gem
+  - jekyll-sitemap  # Create a sitemap using the official Jekyll sitemap gem
+  - jekyll-feed  # Create an Atom feed using the official Jekyll feed gem
 
 # Exclude these files from your production _site
 exclude:
