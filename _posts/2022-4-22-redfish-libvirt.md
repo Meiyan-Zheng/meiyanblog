@@ -7,14 +7,14 @@ title: How to setup Redfish with libvirt - Sushy tools
 - Centos8 / RHEL8
 
 ### Steps 
-1. Install required package: 
+1.Install required package: 
 
 ```
 # yum install -y python3 python3-libvirt
 # pip3 install sushy-tools 
 ```
 
-2. Create sushy service file:
+2.Create sushy service file:
 
 ```
 # vim /usr/lib/systemd/system/sushy.service
@@ -29,7 +29,7 @@ StandardOutput=syslog
 StandardError=syslog
 ```
 
-3. Creat sushy service configuration file:
+3.Creat sushy service configuration file:
 
 ```
 # vim /etc/sushy
@@ -52,20 +52,20 @@ SUSHY_EMULATOR_BOOT_LOADER_MAP = {
 }
 ```
 
-4. Start and enable sushy.service:
+4.Start and enable sushy.service:
 
 ```
 # systemctl enable --now sushy
 ```
 
-5. Configure no password login to root@<libvirtd host>: 
+5.Configure no password login to root@<libvirtd host>: 
 
 ```
 # ssh-keygen 
 # ssh-copy-id root@<libvirtd host>
 ```
   
-6. Now you should be able to see your libvirt domain among the Redfish Systems:
+6.Now you should be able to see your libvirt domain among the Redfish Systems:
 
 ```
 # curl http://localhost:8000/redfish/v1/Systems/
@@ -114,7 +114,7 @@ SUSHY_EMULATOR_BOOT_LOADER_MAP = {
     "@Redfish.Copyright": "Copyright 2014-2016 Distributed Management Task Force, Inc. (DMTF). For the full DMTF copyright policy, see http://www.dmtf.org/about/policies/copyright."
 ```
 
-7. You should be able to flip its power state via the Redfish call:
+7.You should be able to flip its power state via the Redfish call:
     
 ```
 # curl -d '{"ResetType":"On"}' -H "Content-Type: application/json" -X POST http://localhost:8000/redfish/v1/Systems/f091dec2-5660-4c71-b941-23134b6e1ea2/Actions/ComputerSystem.Reset
@@ -123,5 +123,5 @@ SUSHY_EMULATOR_BOOT_LOADER_MAP = {
     
 ### References: 
     
-[1] https://docs.openstack.org/sushy-tools/latest/user/dynamic-emulator.html \
-[2] https://github.com/vhernandomartin/ocp4-ipibm-scripts
+[0] [https://docs.openstack.org/sushy-tools/latest/user/dynamic-emulator.html](https://docs.openstack.org/sushy-tools/latest/user/dynamic-emulator.html]) \
+[1] [https://github.com/vhernandomartin/ocp4-ipibm-scripts](https://github.com/vhernandomartin/ocp4-ipibm-scripts)
