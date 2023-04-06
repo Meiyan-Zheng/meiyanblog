@@ -6,7 +6,8 @@ permalink: /about/
 
 ### Who is Meiyan? 
 
-A Chinese girl, who is playing with linux everyday! 
+这个人很懒，什么也没写。
+
 
 ### Contact me
 
