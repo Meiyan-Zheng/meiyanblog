@@ -1,6 +1,6 @@
 ---
 layout: post
-title: You're up and running!
+title: This is a test post!
 ---
 
-### This is a test page
+### This is a test post!
