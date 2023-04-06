@@ -4,12 +4,10 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+### Who is Meiyan? 
 
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
+A Chinese girl, who is playing with linux everyday! 
 
 ### Contact me
 
-[email@domain.com](mailto:email@domain.com)
+[zmymine113@126.com](mailto:zmymine113@126.com)
