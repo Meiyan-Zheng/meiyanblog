@@ -89,6 +89,7 @@ drwxr-xr-x. 4 root root   80 Apr 17 14:27 secrets
 ```
 
 ### Check ptp logs for each daemon
+#### phc2sys daemon logs
 ```
 $ oc logs -n openshift-ptp -c linuxptp-daemon-container linuxptp-daemon-2gkhd | grep phc2sys
 ...
@@ -100,11 +101,9 @@ phc2sys[739493.914]: [ptp4l.0.config] CLOCK_REALTIME phc offset         4 s2 fre
 phc2sys[739493.977]: [ptp4l.0.config] CLOCK_REALTIME phc offset         4 s2 freq  -23571 delay    510
 ```
 
-`offset`: The time differences between NIC clock and system clock. A low level (usually < 100 nanoseconds) means the signal quality is good. Note that, right after the PTP daemon is started, there may be a big offset, which should be corrected after some minutes.
-\
-`delay`: \
-`freq`: \
+`offset`: The time differences between NIC clock and system clock. A low level (usually < 100 nanoseconds) means the signal quality is good. Note that, right after the PTP daemon is started, there may be a big offset, which should be corrected after some minutes. 
 
+#### tsc2phc daemon logs
 ```
 $ oc logs -n openshift-ptp -c linuxptp-daemon-container linuxptp-daemon-2gkhd | grep ts2phc
 ...
@@ -118,12 +117,55 @@ ts2phc[739738.709]: [ts2phc.0.config] ens2f0 master offset          0 s2 freq   
 ts2phc[739738.764]: [ts2phc.0.config] nmea sentence: GNRMC,035316.00,A,4233.01536,N,07112.87851,W,0.008,,260423,,,A,V
 ```
 
-`master offset`: \
+The line starting with `nmea sentence` includes the input received from the GNSS device (we can check it with cat /dev/gnss0).
 
+#### ptp4l daemon logs
 ```
 $ oc logs -n openshift-ptp -c linuxptp-daemon-container linuxptp-daemon-2gkhd | grep ptp4l 
 ...
+ptp4l[255259.887]: [ptp4l.0.config] selected /dev/ptp5 as PTP clock
+ptp4l[255259.906]: [ptp4l.0.config] port 1: INITIALIZING to LISTENING on INIT_COMPLETE
+ptp4l[255259.906]: [ptp4l.0.config] port 0: INITIALIZING to LISTENING on INIT_COMPLETE
+ptp4l[255259.906]: [ptp4l.0.config] port 0: INITIALIZING to LISTENING on INIT_COMPLETE
+ptp4l[255260.398]: [ptp4l.0.config] port 1: LISTENING to MASTER on ANNOUNCE_RECEIPT_TIMEOUT_EXPIRES
+ptp4l[255260.398]: [ptp4l.0.config] selected local clock 507c6f.fffe.1fb2c8 as best master
+ptp4l[255260.398]: [ptp4l.0.config] port 1: assuming the grand master role
+```
+During the daemon startup, some important information will be shown as above. \
+In the above output, we can see each ptp4l daemon using the local clock as best master, and assuming the grand master role. 
 
+### Useful commands 
+Check the offset between NIC clock and system clock:
+```
+$ oc rsh -n openshift-ptp -c linuxptp-daemon-container linuxptp-daemon-2gkhd
+sh-4.4# phc_ctl ens1f0 cmp
+phc_ctl[756612.355]: offset from CLOCK_REALTIME is -37321849639ns
+
+sh-4.4# phc_ctl ens2f0 cmp
+phc_ctl[756620.722]: offset from CLOCK_REALTIME is -37000000015ns
 ```
 
+Check PTP port stats:
+```
+$ oc rsh -n openshift-ptp -c linuxptp-daemon-container linuxptp-daemon-2gkhd
+sh-4.4# pmc -u -f /var/run/ptp4l.0.config -b 0 'GET PORT_DATA_SET'
+sending: GET PORT_DATA_SET
+	507c6f.fffe.1fb33c-1 seq 0 RESPONSE MANAGEMENT PORT_DATA_SET  
+		portIdentity            507c6f.fffe.1fb33c-1
+		portState               MASTER
+		logMinDelayReqInterval  -4
+		peerMeanPathDelay       0
+		logAnnounceInterval     -3
+		announceReceiptTimeout  3
+		logSyncInterval         -4
+		delayMechanism          1
+		logMinPdelayReqInterval -4
+		versionNumber           2
+```
+*507c6f.fffe.1fb33c is clock id which is come from interface mac*
+
+More options with below command:
+```
+sh-4.4# pmc -u -f /var/run/ptp4l.0.config -b 0 'help'
+```
 
