@@ -440,7 +440,7 @@ And nicx mappings are:
 ```
 
 9. Now we know the network diagram will be:
-<img width="1000" alt="Screenshot 2023-05-26 at 14 53 33" src="https://github.com/Meiyan-Zheng/meiyanblog/assets/30589773/b8eb68c2-b81d-47a7-8f71-92840ce2bf2e">
+<img width="1500" alt="Screenshot 2023-05-26 at 15 34 05" src="https://github.com/Meiyan-Zheng/meiyanblog/assets/30589773/8cbeda23-da1b-490d-a7fc-ec0a0d274bc2">
 
 
 ## Reference Links 
