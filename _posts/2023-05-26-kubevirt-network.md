@@ -81,7 +81,7 @@ From the output we can find each bridge is created on which interface:
 ```
       br-ex -- en6s0
 br-ctlplane -- enp1s0
-     br-osp -- enp7s0z
+     br-osp -- enp7s0
 ```
 Multiple vethxxx interfaces on each bridge are those interfaces attached to kubevirt virt-launcher compute container. 
 
@@ -331,7 +331,7 @@ And nicx mappings are:
 <WIP on the image>
 
     
-#### Reference Links
+#### Reference Links \
 
 [Using the Multus CNI in OpenShift](https://cloud.redhat.com/blog/using-the-multus-cni-in-openshift) \
 [Kubevirt Network Deep Dive](https://kubevirt.io/2018/KubeVirt-Network-Deep-Dive.html)
