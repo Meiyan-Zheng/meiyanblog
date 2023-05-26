@@ -93,7 +93,6 @@ sh-4.4# virsh list
  Id   Name                     State
 ----------------------------------------
  1    openstack_controller-0   running
-
 sh-4.4# virsh domiflist 1
  Interface   Type       Source   Model                     MAC
 ------------------------------------------------------------------------------
@@ -105,6 +104,7 @@ sh-4.4# virsh domiflist 1
  tap5        ethernet   -        virtio-non-transitional   02:7e:90:00:00:52
  tap6        ethernet   -        virtio-non-transitional   02:7e:90:00:00:53
 ```
+
 Check bridges created in this pod:
 ```
 sh-4.4# bridge link show
