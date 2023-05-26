@@ -86,6 +86,7 @@ br-ctlplane -- enp1s0
 ```
 Multiple vethxxx interfaces on each bridge are those interfaces attached to kubevirt virt-launcher compute container.
 
+
 5. Login to virt-launcher pod and check mac address on each interfaces:
 ```
 # oc rsh -n openstack virt-launcher-controller-0-hp6w8 
