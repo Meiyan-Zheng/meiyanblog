@@ -86,7 +86,114 @@ br-ctlplane -- enp1s0
 Multiple vethxxx interfaces on each bridge are those interfaces attached to kubevirt virt-launcher compute container. 
 
 
-5. Login to virt-launcher pod and check mac address on each interfaces:
+5. Check network namespace used by virt-launcher pod to convirm veth interfaces attached that pod:
+```
+sh-4.4# crictl pods | grep virt-launcher
+8ed8becde375b       5 weeks ago          Ready               virt-launcher-controller-0-hp6w8                            openstack                                 0                   (default)
+sh-4.4# crictl inspectp 8ed8becde375b | jq .info.runtimeSpec.linux.namespaces
+[
+  {
+    "type": "pid"
+  },
+  {
+    "type": "network",
+    "path": "/var/run/netns/aca95860-75bd-491e-ae07-ce8769a383ce" <---- network namespace
+  },
+  {
+    "type": "ipc",
+    "path": "/var/run/ipcns/aca95860-75bd-491e-ae07-ce8769a383ce"
+  },
+  {
+    "type": "uts",
+    "path": "/var/run/utsns/aca95860-75bd-491e-ae07-ce8769a383ce"
+  },
+  {
+    "type": "mount"
+  }
+]
+```
+Login to worker-1 node and check from network namespaces:
+```
+sh-4.4# ip netns show | grep  aca95860-75bd-491e-ae07-ce8769a383ce
+aca95860-75bd-491e-ae07-ce8769a383ce (id: 39)
+sh-4.4# ip a | grep aca95860-75bd-491e-ae07-ce8769a383ce -B1
+60: veth31096bf7@if3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue master ovs-system state UP group default 
+    link/ether 5e:43:94:43:c6:83 brd ff:ff:ff:ff:ff:ff link-netns aca95860-75bd-491e-ae07-ce8769a383ce
+--
+61: vethdf55ad06@if4: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-ctlplane state UP group default 
+    link/ether 4e:14:d9:db:90:f8 brd ff:ff:ff:ff:ff:ff link-netns aca95860-75bd-491e-ae07-ce8769a383ce
+--
+62: veth2bc8b822@if5: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-ex state UP group default 
+    link/ether 6a:76:80:de:18:61 brd ff:ff:ff:ff:ff:ff link-netns aca95860-75bd-491e-ae07-ce8769a383ce
+--
+63: veth6da88e10@if6: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-osp state UP group default 
+    link/ether 1e:9f:ca:74:45:99 brd ff:ff:ff:ff:ff:ff link-netns aca95860-75bd-491e-ae07-ce8769a383ce
+--
+64: vethf037a556@if7: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 qdisc noqueue master br-osp state UP group default 
+    link/ether fa:8a:16:aa:d5:ee brd ff:ff:ff:ff:ff:ff link-netns aca95860-75bd-491e-ae07-ce8769a383ce
+--
+65: veth84e51668@if8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-osp state UP group default 
+    link/ether 4e:af:93:7e:cc:cb brd ff:ff:ff:ff:ff:ff link-netns aca95860-75bd-491e-ae07-ce8769a383ce
+--
+66: vethd2a7bafb@if9: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 qdisc noqueue master br-osp state UP group default 
+    link/ether ce:63:0a:f7:be:9e brd ff:ff:ff:ff:ff:ff link-netns aca95860-75bd-491e-ae07-ce8769a383ce
+```
+Above veth devices are connecting to virt-launcher pod.
+And to check veth pair in aca95860-75bd-491e-ae07-ce8769a383ce for each veth devices:
+```
+sh-4.4# ethtool -S veth31096bf7 | grep peer
+     peer_ifindex: 3
+sh-4.4# ethtool -S vethdf55ad06 | grep peer
+     peer_ifindex: 4
+sh-4.4# ethtool -S veth2bc8b822 | grep peer
+     peer_ifindex: 5  
+sh-4.4# ethtool -S veth6da88e10 | grep peer
+     peer_ifindex: 6
+sh-4.4# ethtool -S vethf037a556 | grep peer
+     peer_ifindex: 7
+sh-4.4# ethtool -S veth84e51668 | grep peer
+     peer_ifindex: 8
+sh-4.4# ethtool -S vethd2a7bafb | grep peer
+     peer_ifindex: 9
+```
+Check link index in network namespace:
+```
+sh-4.4# ip netns exec aca95860-75bd-491e-ae07-ce8769a383ce ip link
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+3: eth0@if60: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UP mode DEFAULT group default 
+    link/ether 0a:58:0a:83:00:29 brd ff:ff:ff:ff:ff:ff link-netns 90d7dbb6-73db-497c-8813-6ac0c9c3bfc2
+4: net1@if61: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master k6t-net1 state UP mode DEFAULT group default 
+    link/ether 02:7e:90:3b:0f:7d brd ff:ff:ff:ff:ff:ff link-netns 90d7dbb6-73db-497c-8813-6ac0c9c3bfc2
+5: net2@if62: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master k6t-net2 state UP mode DEFAULT group default 
+    link/ether 02:7e:90:c4:1a:74 brd ff:ff:ff:ff:ff:ff link-netns 90d7dbb6-73db-497c-8813-6ac0c9c3bfc2
+6: net3@if63: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master k6t-net3 state UP mode DEFAULT group default 
+    link/ether 02:7e:90:5a:e4:54 brd ff:ff:ff:ff:ff:ff link-netns 90d7dbb6-73db-497c-8813-6ac0c9c3bfc2
+7: net4@if64: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 qdisc noqueue master k6t-net4 state UP mode DEFAULT group default 
+    link/ether 02:7e:90:e5:db:76 brd ff:ff:ff:ff:ff:ff link-netns 90d7dbb6-73db-497c-8813-6ac0c9c3bfc2
+8: net5@if65: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master k6t-net5 state UP mode DEFAULT group default 
+    link/ether 02:7e:90:f4:b1:8f brd ff:ff:ff:ff:ff:ff link-netns 90d7dbb6-73db-497c-8813-6ac0c9c3bfc2
+9: net6@if66: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 qdisc noqueue master k6t-net6 state UP mode DEFAULT group default 
+    link/ether 02:7e:90:c8:d3:ed brd ff:ff:ff:ff:ff:ff link-netns 90d7dbb6-73db-497c-8813-6ac0c9c3bfc2
+```
+So we know veth devices on worker-1 mapped with interfaces in virt-launch pod as below:
+```
+veth31096bf7@if3 -- eth0
+vethdf55ad06@if4 -- net1
+veth2bc8b822@if5 -- net2
+veth6da88e10@if6 -- net3
+vethf037a556@if7 -- net4
+veth84e51668@if8 -- net5
+vethd2a7bafb@if9 -- net5
+```
+To confirm each netx devices are mapping to which network defined in NetworkAttachmentDefine:
+```
+[root@dell-r740-001 ~]# oc get pod -n openstack virt-launcher-controller-0-hp6w8 -o yaml
+    k8s.v1.cni.cncf.io/networks: '[
+{"interface":"net1","mac":"02:7e:90:00:00:4e","name":"ctlplane","namespace":"openstack"},{"interface":"net2","mac":"02:7e:90:00:00:4f","name":"external","namespace":"openstack"},{"interface":"net3","mac":"02:7e:90:00:00:50","name":"internalapi","namespace":"openstack"},{"interface":"net4","mac":"02:7e:90:00:00:51","name":"storage","namespace":"openstack"},{"interface":"net5","mac":"02:7e:90:00:00:52","name":"storagemgmt","namespace":"openstack"},{"interface":"net6","mac":"02:7e:90:00:00:53","name":"tenant","namespace":"openstack"}]'
+```
+
+6. Login to virt-launcher pod and check mac address on each interfaces:
 ```
 # oc rsh -n openstack virt-launcher-controller-0-hp6w8 
 sh-4.4# virsh list
@@ -141,7 +248,7 @@ sh-4.4# bridge link show
 We can see k6t bridges are created to provide network for virtual machine. 
 
 
-6. Login to controller-0 and check mac address on each interfaces:
+7. Login to controller-0 and check mac address on each interfaces:
 ```
 [cloud-admin@controller-0 ~]$ ip link
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
@@ -182,7 +289,7 @@ enp6s0 -- tap5
 enp7s0 -- tap5
 ```
 
-7. And checking network configuration on openstack controller node:
+8. And checking network configuration on openstack controller node:
 ```
 [root@controller-0 ~]# cat /etc/os-net-config/config.json | jq .
 {
@@ -327,7 +434,7 @@ And nicx mappings are:
 [2023/05/26 01:44:59 AM] [INFO] nic2 mapped to: enp2s0
 ```
 
-8. Now we know the network diagram will be:
+9. Now we know the network diagram will be:
 <WIP on the image>
 
     
