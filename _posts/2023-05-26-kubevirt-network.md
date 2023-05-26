@@ -331,7 +331,6 @@ And nicx mappings are:
 <WIP on the image>
 
     
-#### Reference Links \
-
+## Reference Links 
 [Using the Multus CNI in OpenShift](https://cloud.redhat.com/blog/using-the-multus-cni-in-openshift) \
 [Kubevirt Network Deep Dive](https://kubevirt.io/2018/KubeVirt-Network-Deep-Dive.html)
