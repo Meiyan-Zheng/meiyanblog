@@ -190,7 +190,12 @@ To confirm each netx devices are mapping to which network defined in NetworkAtta
 ```
 [root@dell-r740-001 ~]# oc get pod -n openstack virt-launcher-controller-0-hp6w8 -o yaml
     k8s.v1.cni.cncf.io/networks: '[
-{"interface":"net1","mac":"02:7e:90:00:00:4e","name":"ctlplane","namespace":"openstack"},{"interface":"net2","mac":"02:7e:90:00:00:4f","name":"external","namespace":"openstack"},{"interface":"net3","mac":"02:7e:90:00:00:50","name":"internalapi","namespace":"openstack"},{"interface":"net4","mac":"02:7e:90:00:00:51","name":"storage","namespace":"openstack"},{"interface":"net5","mac":"02:7e:90:00:00:52","name":"storagemgmt","namespace":"openstack"},{"interface":"net6","mac":"02:7e:90:00:00:53","name":"tenant","namespace":"openstack"}]'
+{"interface":"net1","mac":"02:7e:90:00:00:4e","name":"ctlplane","namespace":"openstack"}, 
+{"interface":"net2","mac":"02:7e:90:00:00:4f","name":"external","namespace":"openstack"},  
+{"interface":"net3","mac":"02:7e:90:00:00:50","name":"internalapi","namespace":"openstack"}, 
+{"interface":"net4","mac":"02:7e:90:00:00:51","name":"storage","namespace":"openstack"},
+{"interface":"net5","mac":"02:7e:90:00:00:52","name":"storagemgmt","namespace":"openstack"},
+{"interface":"net6","mac":"02:7e:90:00:00:53","name":"tenant","namespace":"openstack"}]'
 ```
 
 6. Login to virt-launcher pod and check mac address on each interfaces:
@@ -435,8 +440,7 @@ And nicx mappings are:
 ```
 
 9. Now we know the network diagram will be:
-<WIP on the image>
-
+<img width="482" alt="Screenshot 2023-05-26 at 12 57 45" src="https://github.com/Meiyan-Zheng/meiyanblog/assets/30589773/d7c2662f-0960-41e7-b46b-58c54e8722fe">
     
 ## Reference Links 
 [Using the Multus CNI in OpenShift](https://cloud.redhat.com/blog/using-the-multus-cni-in-openshift) \
