@@ -78,13 +78,14 @@ sh-4.4# ip a | grep br-osp
 66: vethd2a7bafb@if9: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 qdisc noqueue master br-osp state UP group default 
 ```
 
-    From the output we can find each bridge is created on which interface:
+  From the output we can find each bridge is created on which interface:
 ```
       br-ex -- en6s0
 br-ctlplane -- enp1s0
      br-osp -- enp7s0z
 ```
-    Multiple vethxxx interfaces on each bridge are those interfaces attached to kubevirt virt-launcher compute container. 
+Multiple vethxxx interfaces on each bridge are those interfaces attached to kubevirt virt-launcher compute container. 
+
 
 5. Login to virt-launcher pod and check mac address on each interfaces:
 ```
@@ -172,7 +173,8 @@ We can see k6t bridges are created to provide network for virtual machine.
 13: genev_sys_6081: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65000 qdisc noqueue master ovs-system state UNKNOWN mode DEFAULT group default qlen 1000
     link/ether 42:0e:2c:43:89:a5 brd ff:ff:ff:ff:ff:ff
 ```
-comparing mac address, we can see interfaces are mapping to tap devices in virt-launch pod:
+
+Comparing mac address, we can see interfaces are mapping to tap devices in virt-launch pod:
 ```
 enp1s0 -- tap0
 enp2s0 -- tap1
