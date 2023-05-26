@@ -57,20 +57,17 @@ To use host binaries, run `chroot /host`
 Pod IP: 192.168.111.21
 If you don't see a command prompt, try pressing enter.
 sh-4.4# chroot /host
-
 sh-4.4# ip a | grep br-ex
 4: enp6s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel master br-ex state UP group default qlen 1000
 38: br-ex: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
 50: veth27141d1f@if5: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-ex state UP group default 
 62: veth2bc8b822@if5: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-ex state UP group default 
-
 sh-4.4# ip a | grep br-ctlplane
 2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel master br-ctlplane state UP group default qlen 1000
 12: br-ctlplane: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
     inet 172.22.0.28/24 brd 172.22.0.255 scope global dynamic noprefixroute br-ctlplane
 49: vethab0fe004@if4: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-ctlplane state UP group default 
 61: vethdf55ad06@if4: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-ctlplane state UP group default 
-
 sh-4.4# ip a | grep br-osp
 5: enp7s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 qdisc fq_codel master br-osp state UP group default qlen 1000
 11: br-osp: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 qdisc noqueue state UP group default qlen 1000
