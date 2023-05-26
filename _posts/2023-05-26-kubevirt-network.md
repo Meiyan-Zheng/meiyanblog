@@ -440,7 +440,7 @@ And nicx mappings are:
 ```
 
 9. Now we know the network diagram will be:
-<img width="482" alt="Screenshot 2023-05-26 at 12 57 45" src="https://github.com/Meiyan-Zheng/meiyanblog/assets/30589773/d7c2662f-0960-41e7-b46b-58c54e8722fe">
+<img width="900" alt="Screenshot 2023-05-26 at 12 57 45" src="https://github.com/Meiyan-Zheng/meiyanblog/assets/30589773/d7c2662f-0960-41e7-b46b-58c54e8722fe">
     
 ## Reference Links 
 [Using the Multus CNI in OpenShift](https://cloud.redhat.com/blog/using-the-multus-cni-in-openshift) \
