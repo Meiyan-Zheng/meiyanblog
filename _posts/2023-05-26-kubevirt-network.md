@@ -84,7 +84,7 @@ From the output we can find each bridge is created on which interface:
 br-ctlplane -- enp1s0
      br-osp -- enp7s0
 ```
-Multiple vethxxx interfaces on each bridge are those interfaces attached to kubevirt virt-launcher compute container.
+Multiple vethxxx interfaces on each bridge are those interfaces attached to kubevirt virt-launcher compute container. \
 
 
 5. Login to virt-launcher pod and check mac address on each interfaces:
@@ -107,6 +107,23 @@ sh-4.4# virsh domiflist 1
 ```
 
 Check bridges created in this pod:
+```
+sh-4.4# ip link show type bridge
+10: k6t-eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UP mode DEFAULT group default 
+    link/ether 02:00:00:00:00:00 brd ff:ff:ff:ff:ff:ff
+12: k6t-net1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default 
+    link/ether 02:7e:90:3b:0f:7d brd ff:ff:ff:ff:ff:ff
+14: k6t-net2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default 
+    link/ether 02:7e:90:c4:1a:74 brd ff:ff:ff:ff:ff:ff
+16: k6t-net3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default 
+    link/ether 02:7e:90:5a:e4:54 brd ff:ff:ff:ff:ff:ff
+18: k6t-net4: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 qdisc noqueue state UP mode DEFAULT group default 
+    link/ether 02:7e:90:e5:db:76 brd ff:ff:ff:ff:ff:ff
+20: k6t-net5: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default 
+    link/ether 02:7e:90:f4:b1:8f brd ff:ff:ff:ff:ff:ff
+22: k6t-net6: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 qdisc noqueue state UP mode DEFAULT group default 
+    link/ether 02:7e:90:c8:d3:ed brd ff:ff:ff:ff:ff:ff
+```
 ```
 sh-4.4# bridge link show
 4: net1@if61: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master k6t-net1 state forwarding priority 32 cost 2 
