@@ -77,8 +77,7 @@ sh-4.4# ip a | grep br-osp
 65: veth84e51668@if8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-osp state UP group default 
 66: vethd2a7bafb@if9: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 qdisc noqueue master br-osp state UP group default 
 ```
-
-  From the output we can find each bridge is created on which interface:
+From the output we can find each bridge is created on which interface:
 ```
       br-ex -- en6s0
 br-ctlplane -- enp1s0
@@ -173,7 +172,6 @@ We can see k6t bridges are created to provide network for virtual machine.
 13: genev_sys_6081: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65000 qdisc noqueue master ovs-system state UNKNOWN mode DEFAULT group default qlen 1000
     link/ether 42:0e:2c:43:89:a5 brd ff:ff:ff:ff:ff:ff
 ```
-
 Comparing mac address, we can see interfaces are mapping to tap devices in virt-launch pod:
 ```
 enp1s0 -- tap0
@@ -317,7 +315,6 @@ enp7s0 -- tap5
   ]
 }
 ```
-
 And nicx mappings are:
 ```
 [root@controller-0 ~]# os-net-config -c /etc/os-net-config/config.json -vvv
