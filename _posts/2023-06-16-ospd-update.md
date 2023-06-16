@@ -56,7 +56,7 @@ spec:
   heatEnvs:
     - ssl/tls-endpoints-public-dns.yaml
     - ssl/enable-tls.yaml
-  heatEnvConfigMap: heat-env-config-deploy <---------------------- configmap contains heat environment files
+  heatEnvConfigMap: heat-env-config-deploy    // configmap contains heat environment files
   tarballConfigMap: tripleo-tarball-config-deploy
 ```
 Delete configmap `heat-env-config-deploy` and create a new one with same name:
