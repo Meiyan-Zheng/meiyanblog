@@ -43,7 +43,6 @@ parameter_defaults:
 ```
 
 3. Delete existing configmap contains heat environment files and create a new one:
-
 ```
 [root@dell-r640-009 config_generator_default]# cat openstackconfiggenerator.yaml 
 apiVersion: osp-director.openstack.org/v1beta1
