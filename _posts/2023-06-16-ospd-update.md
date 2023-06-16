@@ -156,3 +156,7 @@ MariaDB [(none)]> show databases;
 +--------------------+
 3 rows in set (0.001 sec)
 ```
+
+10. But please notice NodeRootPassword is not applied since this is used for firstboot.
+<img width="625" alt="Screenshot 2023-06-16 at 15 39 25" src="https://github.com/Meiyan-Zheng/meiyanblog/assets/30589773/951d1a4e-beed-491e-b599-3279cf1df794">
+
