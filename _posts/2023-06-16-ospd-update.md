@@ -48,15 +48,7 @@ parameter_defaults:
 [root@dell-r640-009 config_generator_default]# cat openstackconfiggenerator.yaml 
 apiVersion: osp-director.openstack.org/v1beta1
 kind: OpenStackConfigGenerator
-metadata:
-  name: "default"
-  namespace: openstack
-spec:
-  enableFencing: False
-  gitSecret: git-secret
-  heatEnvs:
-    - ssl/tls-endpoints-public-dns.yaml
-    - ssl/enable-tls.yaml
+...
   heatEnvConfigMap: heat-env-config-deploy    // configmap contains heat environment files
   tarballConfigMap: tripleo-tarball-config-deploy
 ```
