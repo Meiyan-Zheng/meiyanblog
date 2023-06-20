@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to update passwords for existing overcloud with director operator?
+title: How to update configurations for existing overcloud with director operator?
 ---
 1. Create new file `workaround.yaml` to pass new passwords: 
 ```
@@ -37,9 +37,7 @@ title: How to update passwords for existing overcloud with director operator?
 ```
 [root@dell-r640-009 deploy]# cat tripleo_heat_envs/workarounds.yaml 
 parameter_defaults:
-  NodeRootPassword: 'redhat' // root password for each node
-  AdminPassword: 'RedHat1!'  // keystone admin password
-  NovaPassword: 'testtest'   // keystone nova password and nova user in mysql database
+  parameter: value
 ```
 
 3. Delete existing configmap contains heat environment files and create a new one:
@@ -108,47 +106,11 @@ controller-0               : ok=416  changed=167  unreachable=0    failed=0    s
 undercloud                 : ok=99   changed=26   unreachable=0    failed=0    skipped=12   rescued=0    ignored=1   
 ```
 
-8.  Check password are applied to overcloud:
+8.  Check configurations are applied to overcloud:
 ```
 [root@dell-r640-009 deploy_default]# oc rsh openstackclient
 sh-4.4$ cd 
 sh-4.4$ cd work/n67dh579hf8h65h545h66hb7h689h5c9h89hf4h648h79h5ch57h567hbfh77h5d6h658h559hcch579h5bh9fhb5h65fh55ch5bfh66ch548h556q/
 sh-4.4$ cd playbooks/tripleo-ansible/
-sh-4.4$ grep password group_vars/ -r | grep admin
-group_vars/Controller:  keystone::admin_password: RedHat1!
-group_vars/Controller:  keystone::roles::admin::password: RedHat1!
-sh-4.4$ grep nova group_vars/ -r | grep testtest
-group_vars/Controller:  cinder::nova::password: testtest
-group_vars/Controller:  nova::api_database_connection: mysql+pymysql://nova_api:testtest@172.17.0.10/nova_api?read_default_file=/etc/my.cnf.d/tripleo.cnf&read_default_group=tripleo
-group_vars/Controller:  nova::database_connection: mysql+pymysql://nova:testtest@172.17.0.10/nova?read_default_file=/etc/my.cnf.d/tripleo.cnf&read_default_group=tripleo
-group_vars/Controller:  nova::db::mysql::password: testtest
-group_vars/Controller:  nova::db::mysql_api::password: testtest
-group_vars/Controller:  nova::keystone::authtoken::password: testtest
-group_vars/Controller:  nova::keystone::service_user::password: testtest
-group_vars/Compute:  nova::keystone::authtoken::password: testtest
-group_vars/Compute:  nova::keystone::service_user::password: testtest
+sh-4.4$ grep parameter -r | grep admin
 ```
-
-9.  Go to controller, we can login to mysql with nova user and its new password:
-```
-[root@controller-0 ~]# podman exec -it galera-bundle-podman-0 bash
-[root@controller-0 /]# mysql -u nova -ptesttest
-Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MariaDB connection id is 114054
-Server version: 10.3.32-MariaDB MariaDB Server
-Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-MariaDB [(none)]> show databases;
-+--------------------+
-| Database           |
-+--------------------+
-| information_schema |
-| nova               |
-| nova_cell0         |
-+--------------------+
-3 rows in set (0.001 sec)
-```
-
-10. But please notice NodeRootPassword is not applied since this is used for firstboot.
-<img width="625" alt="Screenshot 2023-06-16 at 15 39 25" src="https://github.com/Meiyan-Zheng/meiyanblog/assets/30589773/951d1a4e-beed-491e-b599-3279cf1df794">
-
