@@ -99,5 +99,11 @@ Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MariaDB connection id is 9403
 Server version: 10.3.32-MariaDB MariaDB Server
 MariaDB [(none)]>
+MariaDB [(none)]> exit
+[root@controller-0 /]# mysql -u root -ptestpassword
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 9403
+Server version: 10.3.32-MariaDB MariaDB Server
+MariaDB [(none)]>
 ```
 
