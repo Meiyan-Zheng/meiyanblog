@@ -24,6 +24,7 @@ Decode the data:
 ```
 [root@dell-r640-009 ~]# echo 'cGFyYW1ldGVyX2Rl...' | base64 -d > passwords.yaml
 ```
+
 2. Modify passwords in file `passwords.yaml` and 
 ```
 [root@dell-r640-009 ~]# cat passwords.yaml
@@ -33,6 +34,7 @@ parameter_defaults:
   NeutronPassword: testtest        // change neutron password in mysql database and keystone user neutron password
   ...
 ```
+
 3. Encode the whole file with [online tool](https://www.base64encode.org/) and update secret: 
 ```
 [root@dell-r640-009 ~]# oc edit secret tripleo-passwords
@@ -41,6 +43,7 @@ data:
   tripleo-overcloud-passwords.yaml: <encoded data>
 ...
 ```
+
 4. Recreate `OpenStackConfigGenerator`:
 ```
 [root@dell-r640-009 yamls]# oc delete OpenStackConfigGenerator/default
@@ -54,7 +57,7 @@ Monitor status of `OpenStackConfigGenerator` until it become finished:
 NAME      STATUS
 default   Finished
 ```
-4. Confirm if configVersion updated :
+5. Confirm if configVersion updated :
 ```
 [root@dell-r640-009 deploy_default]# oc get -n openstack --sort-by {.metadata.creationTimestamp} osconfigversions -o json
 ...
@@ -73,14 +76,15 @@ spec:
   configVersion: n67dh579hf8h65h545h66hb7h689h5c9h89hf4h648h79h5ch57h567hbfh77h5d6h658h559hcch579h5bh9fhb5h65fh55ch5bfh66ch548h556q
   configGenerator: default
 ```
-4. Recreate `OpenStackDeploy` to apply this changes:
+6. Recreate `OpenStackDeploy` to apply this changes:
 ```
 [root@dell-r640-009 yamls]# oc delete OpenStackDeploy default
 openstackdeploy.osp-director.openstack.org "default" deleted
 [root@dell-r640-009 yamls]# oc create -f deploy_default/openstackdeploy.yaml
 openstackdeploy.osp-director.openstack.org/default created
 ```
-5. Monitor deployment logs:
+
+7. Monitor deployment logs:
 ```
 [root@dell-r640-009 deploy_default]# oc logs -f jobs/deploy-openstack-default
 I0616 06:28:02.276426       1 deploy.go:323] Running deploy command.
@@ -91,7 +95,7 @@ compute-1                  : ok=343  changed=132  unreachable=0    failed=0    s
 controller-0               : ok=416  changed=167  unreachable=0    failed=0    skipped=188  rescued=0    ignored=0   
 undercloud                 : ok=99   changed=26   unreachable=0    failed=0    skipped=12   rescued=0    ignored=1   
 ```
-6. Login to openstackclient pod and confirm those changes applied to ansible playbooks:
+8. Login to openstackclient pod and confirm those changes applied to ansible playbooks:
 ```
 [root@dell-r640-009 ~]# oc rsh openstackclient
 sh-4.4$ cd
@@ -111,7 +115,8 @@ group_vars/Compute:  nova::network::neutron::neutron_password: testtest
 sh-4.4$ grep password -r group_vars/ | grep root_password
 group_vars/Controller:  mysql::server::root_password: testpassword
 ```
-7. Login to controller and confirm the password changes applied:
+
+9. Login to controller and confirm the password changes applied:
 ```
 [root@dell-r640-009 ~]# oc rsh openstackclient
 sh-4.4$ ssh controller-0.ctlplane
