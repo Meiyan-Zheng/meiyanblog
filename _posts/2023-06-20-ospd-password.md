@@ -174,5 +174,6 @@ parameter_defaults:
   KeystoneFernetKey1: CQICAAQBAQIHBAkHBgkGBQYGAAIDAwEHAwgHBgIDAAY=
   BarbicanSimpleCryptoKek: BgEGBwUEBgkHBQYIBAQAAgQIBwMBAgUFAQQGBAUBAwE=
   SnmpdReadonlyUserPassword: cj6gkqs4m2lbzpltlflx6cxd
+  MysqlClustercheckPassword: vjjkgjwmgqsk7s4d95z8j79hh
 ```
 3. Encode the content of `new-passwords.yaml` file and update to tripleo-passwords secret, then follow the steps 3 ~ 5 in section [To update passwords for specific users] to re-create `openstackconfiggenerator` and `openstackdeploy`. After re-create openstackconfiggenerator, openstackconfiggenerator will generate new passwords except the parameters listed in `new-passwords.yaml` file. 
