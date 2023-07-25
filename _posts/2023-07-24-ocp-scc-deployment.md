@@ -29,31 +29,9 @@ users:
 ```
 $ oc create sa mysvcacct -n $NAMESPACE
 ```
-3. Create Role and RoleBinding to connect new created SCC and SA: 
+3. Add SCC my-scc to SA mysvcacct:
 ```
-$ cat rbac.yaml 
----
- kind: Role
- apiVersion: rbac.authorization.k8s.io/v1
- metadata:
-   name: use-scc-mysvcacct
- rules:
-   - apiGroups: ["security.openshift.io"]
-     resources: ["securitycontextconstraints"]
-     resourceNames: ["my-scc"]
-     verbs: ["use"]
----
- kind: RoleBinding
- apiVersion: rbac.authorization.k8s.io/v1
- metadata:
-   name: use-scc-mysvcacct
- subjects:
-   - kind: ServiceAccount
-     name: mysvcacct
- roleRef:
-   kind: Role
-   name: use-scc-mysvcacct
-   apiGroup: rbac.authorization.k8s.io
+$ oc adm policy add-scc-to-user my-scc -z mysvcacct
 ```
 4. Create a deployment with `serviceAccountName` and `securityContext`:
 ```
