@@ -1,9 +1,7 @@
 ---
 layout: post
-title: How to enable NET_ADMIN permission to a pod? 
+title: How to enable NET_ADMIN permission to a deployment? 
 ---
-
-## If you're using deployment 
 
 1. Create a custom scc `my-scc`:
 ```
@@ -117,7 +115,3 @@ sh-4.2# ip r del 224.0.0.0/4 dev eth0
 sh-4.2# ip r add 224.0.0.0/4 dev eth0 
 sh-4.2# 
 ```
-
-## If you're apply to a pod directly 
-
-WIP 
