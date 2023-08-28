@@ -55,6 +55,12 @@ $ oc adm upgrade  --to=4.12.27
 $ oc patch mcp/worker --type merge --patch '{"spec":{"paused":false}}'
 ```
 
+## Important
+Since API changes between minor versions (Example 4.11.z to 4.12.z), you need to approve it manually: 
+```
+$ oc -n openshift-config patch cm admin-acks --patch '{"data":{"ack-4.11-kube-1.25-api-removals-in-4.12":"true"}}' --type=merge
+```
+
 ## Confirm update history
 
 We can confirm update path with below command: 
