@@ -10,7 +10,7 @@ title: How to deploy OpenShift ADP?
 - Deploy Openshift Data Fundation
 
 ## Steps 
-1. [Install the OADP Operator](https://docs.openshift.com/container-platform/4.12/backup_and_restore/application_backup_and_restore/installing/installing-oadp-ocs.html)
+1. [Install the OADP Operator](https://docs.openshift.com/container-platform/4.12/backup_and_restore/application_backup_and_restore/installing/installing-oadp-mcg.html)
 2. Retrieve the Multicloud Object Gateway (MCG) credentials in order to create a Secret custom resource (CR) for the OpenShift API for Data Protection (OADP).
 ```
 # oc get secret noobaa-admin -n openshift-storage -o json | jq -r '.data.AWS_ACCESS_KEY_ID|@base64d'
