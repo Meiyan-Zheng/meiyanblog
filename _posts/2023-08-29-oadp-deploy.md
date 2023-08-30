@@ -72,6 +72,7 @@ spec:
           bucket: oadpbucket
           prefix: oadp
 ```
+
 S3 URL:
 ```
 # oc describe noobaa -n openshift-storage | grep serviceS3 -A5
