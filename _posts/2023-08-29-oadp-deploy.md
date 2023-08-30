@@ -102,7 +102,15 @@ spec:
 # oc create -f oadp.yaml 
 dataprotectionapplication.oadp.openshift.io/dpa-sample created
 ```
-
+9. Confirm the installation
+```
+# oc get dpa
+NAME            AGE
+velero-sample   6m52s
+# oc get backupstoragelocation
+NAME              PHASE       LAST VALIDATED   AGE    DEFAULT
+velero-sample-1   Available   50s              7m3s   true
+```
 
 
 
